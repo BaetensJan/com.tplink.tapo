@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- The '/homey.js' script must be included in your settings view to work -->
+    <script
+      type="text/javascript"
+      src="/homey.js"
+      data-origin="settings"
+    ></script>
+  </head>
+  <body>
+    <h1 data-i18n="settings.title">
+      <!-- This will be filled with the translated string with key 'settings.title'. -->
+    </h1>
+    <p data-i18n="settings.subtitle">
+      <!-- This field will also be translated -->
+    </p>
+
+    <fieldset>
+      <legend>My Settings</legend>
+
+      <div class="field row">
+        <label for="email">Email</label>
+        <input id="email" type="email" value="" />
+      </div>
+      <div class="field row">
+        <label for="password">Password</label>
+        <input id="password" type="password" value="" />
+      </div>
+      <div class="field row">
+        <label for="ip">P100 IP</label>
+        <input id="ip" type="text" value="" />
+      </div>
+    </fieldset>
+
+    <button id="save" class="right">Save changes</button>
+
+    <script type="text/javascript">
+      // a method named 'onHomeyReady' must be present in your code
+      function onHomeyReady(Homey) {
+        // Tell Homey we're ready to be displayed
+        Homey.ready();
+
+        var emailElement = document.getElementById("email");
+        var passwordElement = document.getElementById("password");
+        var ipElement = document.getElementById("ip");
+        var saveElement = document.getElementById("save");
+
+        Homey.get("email", function (err, email) {
+          if (err) return Homey.alert(err);
+          emailElement.value = email;
+        });
+
+        Homey.get("password", function (err, password) {
+          if (err) return Homey.alert(err);
+          passwordElement.value = password;
+        });
+
+        Homey.get("ip", function (err, ip) {
+          if (err) return Homey.alert(err);
+          ipElement.value = ip;
+        });
+
+        saveElement.addEventListener("click", function (e) {
+          Homey.set("email", emailElement.value, function (err) {
+            if (err) return Homey.alert(err);
+          });
+          Homey.set("password", passwordElement.value, function (err) {
+            if (err) return Homey.alert(err);
+          });
+          Homey.set("ip", ipElement.value, function (err) {
+            if (err) return Homey.alert(err);
+          });
+        });
+      }
+    </script>
+  </body>
+</html>
